@@ -75,11 +75,19 @@ class Level3 : LevelHard
 
 class Goblin: Mob
 {
-    public Mesh Model;
+    public GameObject Model;
 
     int Heals = 10;
     int Speed = 5;
 
+
+    public Goblin(GameObject obj)
+    {
+        Model = obj;
+        HP();
+        Move();
+        Instantiate(Model);
+    }
     public void HP()
     {
         Mob.HP += Heals;
@@ -93,11 +101,18 @@ class Goblin: Mob
 
 class Ork : Mob
 {
-    public Mesh Model;
+    public GameObject Model;
 
     int Heals = 100;
     int Speed = 1;
 
+    public Ork(GameObject obj)
+    {
+        Model = obj;
+        HP();
+        Move();
+        Instantiate(Model);
+    }
     public void HP()
     {
         Mob.HP += Heals;
@@ -111,11 +126,18 @@ class Ork : Mob
 
 class Troll : Mob
 {
-    public Mesh Model;
+    public GameObject Model;
 
     int Heals = 5;
     int Speed = 100;
 
+    public Troll(GameObject obj)
+    {
+        Model = obj;
+        HP();
+        Move();
+        Instantiate(Model);
+    }
     public void HP()
     {
         Mob.HP += Heals;
@@ -130,51 +152,43 @@ public class MobScript : MonoBehaviour
 {
     public int setLevelHard;
 
+    public GameObject Goblin, Ork, Troll;
     LevelHard LevelHard;
     Mob mob;
     void Start()
     {
-        try
+        switch (setLevelHard)
         {
-            switch (setLevelHard)
-            {
-                case 1:
-                    LevelHard = new Level1();
-                    break;
-                case 2:
-                    LevelHard = new Level2();
-                    break;
-                case 3:
-                    LevelHard = new Level3();
-                    break;
+            case 1:
+                LevelHard = new Level1();
+                break;
+            case 2:
+                LevelHard = new Level2();
+                break;
+            case 3:
+                LevelHard = new Level3();
+                break;
+            default:
+                LevelHard = new Level3();
+                break;
 
-            }
-        }
-        catch
-        {
-            LevelHard = new Level3();
         }
 
-        try
+        int setMob = Random.Range(0, 3);
+        switch (setMob)
         {
-            int setMob = Random.Range(0, 2);
-            switch (setMob)
-            {
-                case 1:
-                    mob = new Goblin();
-                    break;
-                case 2:
-                    mob = new Ork();
-                    break;
-                case 3:
-                    mob = new Troll();
-                    break;
-            }
-        }
-
-        catch
-        {
-            mob = new Goblin();
+            case 0:
+                mob = new Goblin(Goblin);
+                break;
+            case 1:
+                mob = new Ork(Ork);
+                break;
+            case 2:
+                mob = new Troll(Troll);
+                break;
+            default:
+                mob = new Goblin(Goblin);
+                break;
         }
     }
 

@@ -6,15 +6,19 @@ public class GameManager : MonoBehaviour
 {
 
     public GameObject BaseMob;
-    // Start is called before the first frame update
+    
+    void SpawnMob()
+    {
+        Instantiate(BaseMob);
+    }
     void Start()
     {
-        
+        SpawnMob();
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 }

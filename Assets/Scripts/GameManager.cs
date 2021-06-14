@@ -6,7 +6,9 @@ public class GameManager : MonoBehaviour
 {
 
     public GameObject BaseMob;
+    public static int MobOnArena = 0;
     
+
     void SpawnMob()
     {
         Instantiate(BaseMob);
@@ -19,6 +21,7 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
+        if (MobOnArena >= 10)
+            print("GameEnd");
     }
 }

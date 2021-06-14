@@ -4,10 +4,12 @@ using UnityEngine;
 
 public class MobScript : MonoBehaviour
 {
-    int HP = Mob.HP, Speed = Mob.Speed;
+
+    public int HP, Speed;
     void Start()
     {
-        
+        HP = Mob.HP;
+        Speed = Mob.Speed;
     }
 
     // Update is called once per frame
@@ -16,14 +18,16 @@ public class MobScript : MonoBehaviour
         if(HP <= 0)
         {
             Destroy(this.gameObject);
+            GameManager.MobOnArena--;
         }
     }
 
-    private void OnTriggerEnter(Collider other)
+    public void Damage()
     {
-        if(other.tag == "Player")
-        {
-            HP -= 2;
-        }
+        HP -= 2;
+    }
+    private void OnMouseDown()
+    {
+        Damage();
     }
 }

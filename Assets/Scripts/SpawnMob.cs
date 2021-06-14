@@ -92,12 +92,12 @@ class Goblin: Mob
     }
     public void HP()
     {
-        Mob.HP += Heals;
+        Mob.HP = Heals;
     }
 
     public void Move()
     {
-        Mob.Speed += Speed;
+        Mob.Speed = Speed;
     }
 }
 
@@ -117,12 +117,12 @@ class Ork : Mob
     }
     public void HP()
     {
-        Mob.HP += Heals;
+        Mob.HP = Heals;
     }
 
     public void Move()
     {
-        Mob.Speed += Speed;
+        Mob.Speed = Speed;
     }
 }
 
@@ -142,12 +142,12 @@ class Troll : Mob
     }
     public void HP()
     {
-        Mob.HP += Heals;
+        Mob.HP = Heals;
     }
 
     public void Move()
     {
-        Mob.Speed += Speed;
+        Mob.Speed = Speed;
     }
 }
 public class SpawnMob : MonoBehaviour
@@ -203,9 +203,10 @@ public class SpawnMob : MonoBehaviour
     void Update()
     {
         timer += Time.deltaTime;
-        if (timer >= 2f)
+        if (timer >= 4f)
         {
             Spawn();
+            GameManager.MobOnArena++;
             timer = 0;
         }
     }

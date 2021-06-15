@@ -10,6 +10,8 @@ public class MobScript : MonoBehaviour
     {
         HP = Mob.HP;
         Speed = Mob.Speed;
+        Mob.HP = 0;
+        Mob.Speed = 0;
     }
 
     // Update is called once per frame
@@ -24,7 +26,7 @@ public class MobScript : MonoBehaviour
 
     public void Damage()
     {
-        HP -= 2;
+        HP -= 10;
     }
     private void OnMouseDown()
     {

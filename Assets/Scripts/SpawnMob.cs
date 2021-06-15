@@ -12,67 +12,61 @@ abstract class Mob: MonoBehaviour
         float x = Random.Range(-2.2f, 2.3f), y = Random.Range(-4.8f, 4.9f);
         Vector3 spawnPoint = new Vector3(x, y, -0.5f);
         Instantiate(Model, spawnPoint, Quaternion.identity);
+        ControllAnimation();
     }
 
-    public void Move()
+    public void ControllAnimation()
     {
-        float x = 0, y = 0;
-        this.GetComponent<Transform>().Translate(new Vector3(x+Speed, y+Speed, 0));
+
     }
+    
 }
 
-public interface LevelHard
+public abstract class LevelHard
 {
-    public void setHP();
-    public void setSpeed();
+    public abstract int Heals { get; }
+    public abstract int Speed { get; }
+
+    public LevelHard()
+    {
+        setHP();
+        setSpeed();
+    }
+
+
+    public void setHP()
+    {
+        Mob.HP += Heals;
+    }
+
+    public void setSpeed()
+    {
+        Mob.Speed += Speed;
+    }
 }
 
 class Level1 : LevelHard
 {
-    int Heals = 10;
-    int Speed = 0;
-
-    public void setHP()
-    {
-        Mob.HP += Heals;
-    }
-
-    public void setSpeed()
-    {
-        Mob.Speed += Speed;
-    }
+    int setHeals = 10;
+    int setSpeed = 0;
+    public override int Heals { get => setHeals; }
+    public override int Speed { get => setSpeed; }
 }
 
 class Level2 : LevelHard
 {
-    int Heals = 15;
-    int Speed = 5;
-
-    public void setHP()
-    {
-        Mob.HP += Heals;
-    }
-
-    public void setSpeed()
-    {
-        Mob.Speed += Speed;
-    }
+    int setHeals = 20;
+    int setSpeed = 5;
+    public override int Heals { get => setHeals; }
+    public override int Speed { get => setSpeed; }
 }
 
 class Level3 : LevelHard
 {
-    int Heals = 20;
-    int Speed = 10;
-
-    public void setHP()
-    {
-        Mob.HP += Heals;
-    }
-
-    public void setSpeed()
-    {
-        Mob.Speed += Speed;
-    }
+    int setHeals = 30;
+    int setSpeed = 10;
+    public override int Heals { get => setHeals; }
+    public override int Speed { get => setSpeed; }
 }
 
 class Goblin: Mob
@@ -92,12 +86,12 @@ class Goblin: Mob
     }
     public void HP()
     {
-        Mob.HP = Heals;
+        Mob.HP += Heals;
     }
 
     public void Move()
     {
-        Mob.Speed = Speed;
+        Mob.Speed += Speed;
     }
 }
 
@@ -117,12 +111,12 @@ class Ork : Mob
     }
     public void HP()
     {
-        Mob.HP = Heals;
+        Mob.HP += Heals;
     }
 
     public void Move()
     {
-        Mob.Speed = Speed;
+        Mob.Speed += Speed;
     }
 }
 
@@ -142,23 +136,24 @@ class Troll : Mob
     }
     public void HP()
     {
-        Mob.HP = Heals;
+        Mob.HP += Heals;
     }
 
     public void Move()
     {
-        Mob.Speed = Speed;
+        Mob.Speed += Speed;
     }
 }
+
+
 public class SpawnMob : MonoBehaviour
 {
-    public int setLevelHard;
+    public static int setLevelHard;
 
     public GameObject Goblin, Ork, Troll;
 
-    LevelHard LevelHard;
-    Mob mob;
     public float timer = 0;
+    public static float setSpawnSpeed = 1;
 
     void Spawn()
     {
@@ -166,44 +161,45 @@ public class SpawnMob : MonoBehaviour
         switch (setMob)
         {
             case 0:
-                mob = new Goblin(Goblin);
+                new Goblin(Goblin);
                 break;
             case 1:
-                mob = new Ork(Ork);
+                new Ork(Ork);
                 break;
             case 2:
-                mob = new Troll(Troll);
+                new Troll(Troll);
                 break;
             default:
-                mob = new Goblin(Goblin);
+                new Goblin(Goblin);
                 break;
+        }
+        switch (setLevelHard)
+        {
+            case 1:
+                new Level1();
+                break;
+            case 2:
+                new Level2();
+                break;
+            case 3:
+                new Level3();
+                break;
+            default:
+                new Level3();
+                break;
+
         }
     }
     void Start()
     {
-        switch (setLevelHard)
-        {
-            case 1:
-                LevelHard = new Level1();
-                break;
-            case 2:
-                LevelHard = new Level2();
-                break;
-            case 3:
-                LevelHard = new Level3();
-                break;
-            default:
-                LevelHard = new Level3();
-                break;
-
-        }
+        
     }
 
     // Update is called once per frame
     void Update()
     {
         timer += Time.deltaTime;
-        if (timer >= 4f)
+        if (timer >= setSpawnSpeed)
         {
             Spawn();
             GameManager.MobOnArena++;

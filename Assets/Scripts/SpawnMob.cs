@@ -5,11 +5,11 @@ using UnityEngine;
 abstract class Mob: MonoBehaviour
 {
     public static int HP = 10;
-    public static int Speed = 10;
+    public static int Speed = 0;
 
     public void spawnMob(GameObject Model)
     {
-        float x = Random.Range(-2.2f, 2.3f), y = Random.Range(-4.8f, 4.9f);
+        float x = Random.Range(-2f, 2f), y = Random.Range(-3f, 4f);
         Vector3 spawnPoint = new Vector3(x, y, -0.5f);
         Instantiate(Model, spawnPoint, Quaternion.identity);
         ControllAnimation();
@@ -17,7 +17,7 @@ abstract class Mob: MonoBehaviour
 
     public void ControllAnimation()
     {
-
+        
     }
     
 }
@@ -56,7 +56,7 @@ class Level1 : LevelHard
 class Level2 : LevelHard
 {
     int setHeals = 20;
-    int setSpeed = 5;
+    int setSpeed = 1;
     public override int Heals { get => setHeals; }
     public override int Speed { get => setSpeed; }
 }
@@ -64,7 +64,7 @@ class Level2 : LevelHard
 class Level3 : LevelHard
 {
     int setHeals = 30;
-    int setSpeed = 10;
+    int setSpeed = 2;
     public override int Heals { get => setHeals; }
     public override int Speed { get => setSpeed; }
 }
@@ -100,7 +100,7 @@ class Ork : Mob
     public GameObject Model;
 
     int Heals = 100;
-    int Speed = 1;
+    int Speed = 3;
 
     public Ork(GameObject obj)
     {
@@ -125,7 +125,7 @@ class Troll : Mob
     public GameObject Model;
 
     int Heals = 5;
-    int Speed = 100;
+    int Speed = 4;
 
     public Troll(GameObject obj)
     {
@@ -154,6 +154,7 @@ public class SpawnMob : MonoBehaviour
 
     public float timer = 0;
     public static float setSpawnSpeed = 1;
+    public static float setFreez = 1;
 
     void Spawn()
     {
@@ -175,6 +176,8 @@ public class SpawnMob : MonoBehaviour
         }
         switch (setLevelHard)
         {
+            case 0:
+                break;
             case 1:
                 new Level1();
                 break;
@@ -198,11 +201,14 @@ public class SpawnMob : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        timer += Time.deltaTime;
+        timer += (Time.deltaTime * setFreez);
+        if(setFreez == 0)
+            ButtonBonusScript.timeFreez -= Time.deltaTime;
+        if (ButtonBonusScript.timeFreez <= 0)
+            setFreez = 1;
         if (timer >= setSpawnSpeed)
         {
             Spawn();
-            GameManager.MobOnArena++;
             timer = 0;
         }
     }

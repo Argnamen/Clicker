@@ -5,13 +5,16 @@ using UnityEngine;
 public class MobScript : MonoBehaviour
 {
 
-    public int HP, Speed;
+    public float Speed;
+    public float HP;
     void Start()
     {
         HP = Mob.HP;
         Speed = Mob.Speed;
         Mob.HP = 0;
         Mob.Speed = 0;
+        GetComponent<Rigidbody>().velocity = new Vector3(Speed, Speed, 0f);
+        GameObjectScore.Score(this.GetComponent<MobScript>());
     }
 
     // Update is called once per frame
@@ -19,8 +22,10 @@ public class MobScript : MonoBehaviour
     {
         if(HP <= 0)
         {
+            GameManager.records++;
+            GameObjectScore.RemoveScore(this.GetComponent<MobScript>());
             Destroy(this.gameObject);
-            GameManager.MobOnArena--;
+            GameManager.PlayerPoint++;
         }
     }
 
